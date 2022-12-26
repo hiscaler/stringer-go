@@ -21,7 +21,7 @@ func TestStringer_ToLower(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			stringer := NewStringer(tt.er.OriginalString, tt.er.CaseSensitive)
 			if got := stringer.ToLower(); got.Value() != tt.want {
-				t.Errorf("%s ToLower() = %v, want %v", tt.name, got.Value(), tt.want)
+				t.Errorf("%s ToLower() = `%v`, want `%v`", tt.name, got.Value(), tt.want)
 			}
 		})
 	}
@@ -44,7 +44,7 @@ func TestStringer_ToUpper(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			stringer := NewStringer(tt.er.OriginalString, tt.er.CaseSensitive)
 			if got := stringer.ToUpper(); got.Value() != tt.want {
-				t.Errorf("%s ToUpper() = %v, want %v", tt.name, got.Value(), tt.want)
+				t.Errorf("%s ToUpper() = `%v`, want `%v`", tt.name, got.Value(), tt.want)
 			}
 		})
 	}
@@ -69,7 +69,7 @@ func TestStringer_HasPrefix(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			stringer := NewStringer(tt.er.OriginalString, tt.er.CaseSensitive)
 			if got := stringer.HasPrefix(tt.prefix); got != tt.want {
-				t.Errorf("%s HasPrefix() = %v, want %v", tt.name, got, tt.want)
+				t.Errorf("%s HasPrefix() = `%v`, want `%v`", tt.name, got, tt.want)
 			}
 		})
 	}
@@ -94,7 +94,33 @@ func TestStringer_HasSuffix(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			stringer := NewStringer(tt.er.OriginalString, tt.er.CaseSensitive)
 			if got := stringer.HasSuffix(tt.suffix); got != tt.want {
-				t.Errorf("%s HasSuffix() = %v, want %v", tt.name, got, tt.want)
+				t.Errorf("%s HasSuffix() = `%v`, want `%v`", tt.name, got, tt.want)
+			}
+		})
+	}
+}
+
+func TestStringer_TrimRight(t *testing.T) {
+	type er struct {
+		OriginalString string
+		CaseSensitive  bool
+	}
+	tests := []struct {
+		name   string
+		er     er
+		cutstr string
+		want   string
+	}{
+		{"t1", er{OriginalString: "Hello World!", CaseSensitive: true}, "World!", "Hello "},
+		{"t2", er{OriginalString: " Hello World!", CaseSensitive: false}, "wOrld!", " Hello "},
+		{"t3", er{OriginalString: "Hello World!", CaseSensitive: true}, "wOrld!", "Hello Wo"},
+		{"t4", er{OriginalString: "Hello World!", CaseSensitive: true}, "Hello", "Hello World!"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			stringer := NewStringer(tt.er.OriginalString, tt.er.CaseSensitive)
+			if got := stringer.TrimRight(tt.cutstr); got.Value() != tt.want {
+				t.Errorf("%s TrimRight() = `%v`, want `%v`", tt.name, got.Value(), tt.want)
 			}
 		})
 	}
@@ -121,7 +147,7 @@ func TestStringer_RemoveRight(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			stringer := NewStringer(tt.er.OriginalString, tt.er.CaseSensitive)
 			if got := stringer.RemoveRight(tt.custstr); got.Value() != tt.want {
-				t.Errorf("%s RemoveRight() = %v, want %v", tt.name, got.Value(), tt.want)
+				t.Errorf("%s RemoveRight() = `%v`, want `%v`", tt.name, got.Value(), tt.want)
 			}
 		})
 	}
@@ -148,7 +174,55 @@ func TestStringer_Contains(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			stringer := NewStringer(tt.er.OriginalString, tt.er.CaseSensitive)
 			if got := stringer.Contains(tt.custstr); got != tt.want {
-				t.Errorf("%s Contains() = %v, want %v", tt.name, got, tt.want)
+				t.Errorf("%s Contains() = `%v`, want `%v`", tt.name, got, tt.want)
+			}
+		})
+	}
+}
+
+func TestStringer_UpperFirst(t *testing.T) {
+	type er struct {
+		OriginalString string
+		CaseSensitive  bool
+	}
+	tests := []struct {
+		name string
+		er   er
+		want string
+	}{
+		{"t1", er{OriginalString: "Hello World!", CaseSensitive: true}, "Hello World!"},
+		{"t2", er{OriginalString: " Hello World!", CaseSensitive: false}, " Hello World!"},
+		{"t3", er{OriginalString: "hello World!", CaseSensitive: true}, "Hello World!"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			stringer := NewStringer(tt.er.OriginalString, tt.er.CaseSensitive)
+			if got := stringer.UpperFirst(); got.Value() != tt.want {
+				t.Errorf("%s UpperFirst() = `%v`, want `%v`", tt.name, got.Value(), tt.want)
+			}
+		})
+	}
+}
+
+func TestStringer_LowerFirst(t *testing.T) {
+	type er struct {
+		OriginalString string
+		CaseSensitive  bool
+	}
+	tests := []struct {
+		name string
+		er   er
+		want string
+	}{
+		{"t1", er{OriginalString: "Hello World!", CaseSensitive: true}, "hello World!"},
+		{"t2", er{OriginalString: " Hello World!", CaseSensitive: false}, " Hello World!"},
+		{"t3", er{OriginalString: "hello World!", CaseSensitive: true}, "hello World!"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			stringer := NewStringer(tt.er.OriginalString, tt.er.CaseSensitive)
+			if got := stringer.LowerFirst(); got.Value() != tt.want {
+				t.Errorf("%s LowerFirst() = `%v`, want `%v`", tt.name, got.Value(), tt.want)
 			}
 		})
 	}

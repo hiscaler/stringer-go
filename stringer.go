@@ -3,6 +3,7 @@ package stringer
 import (
 	"reflect"
 	"strings"
+	"unicode"
 	"unsafe"
 )
 
@@ -62,11 +63,17 @@ func (s *Stringer) TrimSpace() *Stringer {
 }
 
 func (s *Stringer) TrimRight(cutset string) *Stringer {
+	if s.processedString == "" || cutset == "" {
+		return s
+	}
+
 	s1 := s.processedString
 	if !s.CaseSensitive {
 		s1 = s.lowerProcessedString
+		cutset = strings.ToLower(cutset)
 	}
-	s.setProcessedString(strings.TrimRight(s1, cutset))
+	s1 = strings.TrimRight(s1, cutset)
+	s.setProcessedString(s.processedString[0:len(s1)])
 	return s
 }
 
@@ -88,6 +95,9 @@ func (s *Stringer) LastIndex(substr string) int {
 	return strings.LastIndex(s1, substr)
 }
 
+// RemoveRight remove all complete suffix string
+// s = "aaabbb"
+// RemoveRight("b") = "aaa"
 func (s *Stringer) RemoveRight(str string) *Stringer {
 	if !s.HasSuffix(str) {
 		return s
@@ -111,6 +121,24 @@ func (s *Stringer) IsBlank() bool {
 
 func (s *Stringer) Contains(substr string) bool {
 	return s.Index(substr) >= 0
+}
+
+func (s *Stringer) UpperFirst() *Stringer {
+	r := []rune(s.processedString)
+	if len(s.processedString) > 0 && unicode.IsLetter(r[0]) && unicode.IsLower(r[0]) {
+		r[0] -= 32
+		s.setProcessedString(string(r))
+	}
+	return s
+}
+
+func (s *Stringer) LowerFirst() *Stringer {
+	r := []rune(s.processedString)
+	if len(s.processedString) > 0 && unicode.IsLetter(r[0]) && unicode.IsUpper(r[0]) {
+		r[0] += 32
+		s.setProcessedString(string(r))
+	}
+	return s
 }
 
 func (s *Stringer) Value() string {

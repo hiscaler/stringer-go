@@ -102,6 +102,18 @@ func (s *Stringer) RemoveRight(str string) *Stringer {
 	return s
 }
 
+func (s *Stringer) IsEmpty() bool {
+	return len(s.processedString) == 0
+}
+
+func (s *Stringer) IsBlank() bool {
+	return len(s.processedString) == 0 || strings.TrimSpace(s.processedString) == ""
+}
+
+func (s *Stringer) Contains(substr string) bool {
+	return s.Index(substr) >= 0
+}
+
 func (s *Stringer) Value() string {
 	return s.processedString
 }

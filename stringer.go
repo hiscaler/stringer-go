@@ -89,17 +89,16 @@ func (s *Stringer) LastIndex(substr string) int {
 }
 
 func (s *Stringer) RemoveRight(str string) *Stringer {
+	if !s.HasSuffix(str) {
+		return s
+	}
 	for {
-		if !s.HasSuffix(str) {
-			return s
-		}
 		index := s.LastIndex(str)
 		if index == -1 {
 			return s
 		}
 		s.setProcessedString(strings.TrimSpace(s.processedString[0:index]))
 	}
-	return s
 }
 
 func (s *Stringer) IsEmpty() bool {

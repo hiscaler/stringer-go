@@ -126,7 +126,7 @@ func TestStringer_TrimRight(t *testing.T) {
 	}
 }
 
-func TestStringer_RemoveRight(t *testing.T) {
+func TestStringer_TrimPrefix(t *testing.T) {
 	type er struct {
 		OriginalString string
 		CaseSensitive  bool
@@ -137,17 +137,44 @@ func TestStringer_RemoveRight(t *testing.T) {
 		custstr string
 		want    string
 	}{
-		{"t1", er{OriginalString: "Hello World!", CaseSensitive: true}, "World!", "Hello"},
-		{"t2", er{OriginalString: " Hello World!", CaseSensitive: false}, "wOrld!", "Hello"},
+		{"t1", er{OriginalString: "Hello World!", CaseSensitive: true}, "World!", "Hello World!"},
+		{"t2", er{OriginalString: " Hello World!", CaseSensitive: false}, "Hello", " Hello World!"},
+		{"t3", er{OriginalString: "Hello World!", CaseSensitive: true}, "hello", "Hello World!"},
+		{"t4", er{OriginalString: "Hello hello World!World!", CaseSensitive: false}, "hello", " hello World!World!"},
+		{"t5", er{OriginalString: "Hellohello World!World!", CaseSensitive: false}, "hello", "hello World!World!"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			stringer := NewStringer(tt.er.OriginalString, tt.er.CaseSensitive)
+			if got := stringer.TrimPrefix(tt.custstr); got.Value() != tt.want {
+				t.Errorf("%s TrimPrefix() = `%v`, want `%v`", tt.name, got.Value(), tt.want)
+			}
+		})
+	}
+}
+
+func TestStringer_TrimSuffix(t *testing.T) {
+	type er struct {
+		OriginalString string
+		CaseSensitive  bool
+	}
+	tests := []struct {
+		name    string
+		er      er
+		custstr string
+		want    string
+	}{
+		{"t1", er{OriginalString: "Hello World!", CaseSensitive: true}, "World!", "Hello "},
+		{"t2", er{OriginalString: " Hello World!", CaseSensitive: false}, "wOrld!", " Hello "},
 		{"t3", er{OriginalString: "Hello World!", CaseSensitive: true}, "wOrld!", "Hello World!"},
-		{"t4", er{OriginalString: "Hello World!World!", CaseSensitive: false}, "World!", "Hello"},
+		{"t4", er{OriginalString: "Hello World!World!", CaseSensitive: false}, "World!", "Hello World!"},
 		{"t5", er{OriginalString: "Hello World!World!", CaseSensitive: false}, "!wOrld!", "Hello World"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			stringer := NewStringer(tt.er.OriginalString, tt.er.CaseSensitive)
-			if got := stringer.RemoveRight(tt.custstr); got.Value() != tt.want {
-				t.Errorf("%s RemoveRight() = `%v`, want `%v`", tt.name, got.Value(), tt.want)
+			if got := stringer.TrimSuffix(tt.custstr); got.Value() != tt.want {
+				t.Errorf("%s TrimSuffix() = `%v`, want `%v`", tt.name, got.Value(), tt.want)
 			}
 		})
 	}

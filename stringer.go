@@ -11,7 +11,7 @@ type Stringer struct {
 	processedString      string // Processed string
 	lowerProcessedString string // Processed lower string
 	OriginalString       string // Original string
-	CaseSensitive        bool   // Case Sensitive
+	CaseSensitive        bool   // Case sensitive
 }
 
 func NewStringer(s string, caseSensitive bool) *Stringer {
@@ -95,20 +95,31 @@ func (s *Stringer) LastIndex(substr string) int {
 	return strings.LastIndex(s1, substr)
 }
 
-// RemoveRight remove all complete suffix string
-// s = "aaabbb"
-// RemoveRight("b") = "aaa"
-func (s *Stringer) RemoveRight(str string) *Stringer {
-	if !s.HasSuffix(str) {
-		return s
+func (s *Stringer) TrimPrefix(prefix string) *Stringer {
+	s1 := s.processedString
+	if !s.CaseSensitive {
+		prefix = strings.ToLower(prefix)
+		s1 = s.lowerProcessedString
 	}
-	for {
-		index := s.LastIndex(str)
-		if index == -1 {
-			return s
-		}
-		s.setProcessedString(strings.TrimSpace(s.processedString[0:index]))
+	n := len(s1)
+	s1 = strings.TrimPrefix(s1, prefix)
+	if s1 == "" {
+		s.setProcessedString("")
+	} else {
+		s.setProcessedString(s.processedString[n-len(s1):])
 	}
+
+	return s
+}
+
+func (s *Stringer) TrimSuffix(suffix string) *Stringer {
+	s1 := s.processedString
+	if !s.CaseSensitive {
+		suffix = strings.ToLower(suffix)
+		s1 = s.lowerProcessedString
+	}
+	s.setProcessedString(s.processedString[0:len(strings.TrimSuffix(s1, suffix))])
+	return s
 }
 
 func (s *Stringer) IsEmpty() bool {

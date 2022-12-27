@@ -5,7 +5,7 @@ A string processing helper, and supported case-sensitive.
 
 Return value same as the built-in `strings`.
 
-If you don't care case-sensitive, please use built-in `string` lib.
+If you don't care case-sensitive, please use built-in `strings` lib.
 
 ## Install
 

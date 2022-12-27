@@ -62,6 +62,21 @@ func (s *Stringer) TrimSpace() *Stringer {
 	return s
 }
 
+func (s *Stringer) TrimLeft(cutset string) *Stringer {
+	if s.processedString == "" || cutset == "" {
+		return s
+	}
+
+	s1 := s.processedString
+	if !s.CaseSensitive {
+		s1 = s.lowerProcessedString
+		cutset = strings.ToLower(cutset)
+	}
+	s1 = strings.TrimLeft(s1, cutset)
+	s.setProcessedString(s.processedString[len(s.processedString)-len(s1):])
+	return s
+}
+
 func (s *Stringer) TrimRight(cutset string) *Stringer {
 	if s.processedString == "" || cutset == "" {
 		return s

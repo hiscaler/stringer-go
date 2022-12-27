@@ -100,6 +100,34 @@ func TestStringer_HasSuffix(t *testing.T) {
 	}
 }
 
+func TestStringer_TrimLeft(t *testing.T) {
+	type er struct {
+		OriginalString string
+		CaseSensitive  bool
+	}
+	tests := []struct {
+		name   string
+		er     er
+		cutstr string
+		want   string
+	}{
+		{"t1", er{OriginalString: "Hello World!", CaseSensitive: true}, "Hello", " World!"},
+		{"t2", er{OriginalString: "Hellohello World!", CaseSensitive: false}, "Hello!", " World!"},
+		{"t3", er{OriginalString: "Hello World!", CaseSensitive: true}, "wOrld!", "Hello World!"},
+		{"t4", er{OriginalString: "hello World!", CaseSensitive: true}, "Hello", "hello World!"},
+		{"t5", er{OriginalString: "111234!", CaseSensitive: true}, "123", "4!"},
+		{"t6", er{OriginalString: "", CaseSensitive: true}, "123", ""},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			stringer := NewStringer(tt.er.OriginalString, tt.er.CaseSensitive)
+			if got := stringer.TrimLeft(tt.cutstr); got.Value() != tt.want {
+				t.Errorf("%s TrimLeft() = `%v`, want `%v`", tt.name, got.Value(), tt.want)
+			}
+		})
+	}
+}
+
 func TestStringer_TrimRight(t *testing.T) {
 	type er struct {
 		OriginalString string

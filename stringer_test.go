@@ -208,6 +208,31 @@ func TestStringer_TrimSuffix(t *testing.T) {
 	}
 }
 
+func TestStringer_EqualFold(t *testing.T) {
+	type er struct {
+		OriginalString string
+		CaseSensitive  bool
+	}
+	tests := []struct {
+		name   string
+		er     er
+		string string
+		want   bool
+	}{
+		{"t1", er{OriginalString: "Hello World!", CaseSensitive: true}, "Hello World!", true},
+		{"t2", er{OriginalString: " Hello World!", CaseSensitive: false}, " HELLO WORLD!", true},
+		{"t3", er{OriginalString: "Hello World!", CaseSensitive: true}, " Hello World!", false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			stringer := NewStringer(tt.er.OriginalString, tt.er.CaseSensitive)
+			if got := stringer.EqualFold(tt.string); got != tt.want {
+				t.Errorf("%s EqualFold() = `%v`, want `%v`", tt.name, got, tt.want)
+			}
+		})
+	}
+}
+
 func TestStringer_Contains(t *testing.T) {
 	type er struct {
 		OriginalString string

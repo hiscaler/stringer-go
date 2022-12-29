@@ -137,6 +137,10 @@ func (s *Stringer) TrimSuffix(suffix string) *Stringer {
 	return s
 }
 
+func (s *Stringer) EqualFold(t string) bool {
+	return s.lowerProcessedString == strings.ToLower(t)
+}
+
 func (s *Stringer) IsEmpty() bool {
 	return len(s.processedString) == 0
 }

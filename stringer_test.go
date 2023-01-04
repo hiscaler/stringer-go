@@ -331,7 +331,7 @@ func TestStringer_ContainsWord(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			stringer := NewStringer(tt.er.OriginalString, tt.er.CaseSensitive)
 			if got := stringer.ContainsWord(tt.word); got != tt.want {
-				t.Errorf("%s LowerFirst() = `%v`, want `%v`", tt.name, got, tt.want)
+				t.Errorf("%s ContainsWord() = `%v`, want `%v`", tt.name, got, tt.want)
 			}
 		})
 	}

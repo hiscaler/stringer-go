@@ -2,6 +2,7 @@ package stringer
 
 import (
 	"reflect"
+	"regexp"
 	"strings"
 	"unicode"
 	"unsafe"
@@ -151,6 +152,14 @@ func (s *Stringer) IsBlank() bool {
 
 func (s *Stringer) Contains(substr string) bool {
 	return s.Index(substr) >= 0
+}
+
+func (s *Stringer) ContainsWord(word string) bool {
+	str := `(^|([\s\t\n]+))(` + word + `)($|([\s\t\n]+))`
+	if !s.CaseSensitive {
+		str = "(?i)" + str
+	}
+	return regexp.MustCompile(str).MatchString(s.processedString)
 }
 
 func (s *Stringer) UpperFirst() *Stringer {

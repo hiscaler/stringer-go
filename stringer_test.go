@@ -307,3 +307,32 @@ func TestStringer_LowerFirst(t *testing.T) {
 		})
 	}
 }
+
+func TestStringer_ContainsWord(t *testing.T) {
+	type er struct {
+		OriginalString string
+		CaseSensitive  bool
+	}
+	tests := []struct {
+		name string
+		er   er
+		word string
+		want bool
+	}{
+		{"t1", er{OriginalString: "Hello World!", CaseSensitive: true}, "hello World!", false},
+		{"t2", er{OriginalString: " Hello World!", CaseSensitive: false}, " Hello World!", true},
+		{"t3", er{OriginalString: "hello World!", CaseSensitive: true}, "hello World!", true},
+		{"t4", er{OriginalString: "hello World!", CaseSensitive: true}, "Hello World!", false},
+		{"t5", er{OriginalString: "username", CaseSensitive: false}, "name", false},
+		{"t6", er{OriginalString: "what's you name", CaseSensitive: false}, "what", false},
+		{"t5", er{OriginalString: "what's you name", CaseSensitive: false}, "what's", true},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			stringer := NewStringer(tt.er.OriginalString, tt.er.CaseSensitive)
+			if got := stringer.ContainsWord(tt.word); got != tt.want {
+				t.Errorf("%s LowerFirst() = `%v`, want `%v`", tt.name, got, tt.want)
+			}
+		})
+	}
+}

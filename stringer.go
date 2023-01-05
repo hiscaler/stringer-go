@@ -8,6 +8,10 @@ import (
 	"unsafe"
 )
 
+var (
+	rxSpaceless = regexp.MustCompile("\\s{2,}")
+)
+
 type Stringer struct {
 	processedString      string // Processed string
 	lowerProcessedString string // Processed lower string
@@ -60,6 +64,18 @@ func (s *Stringer) HasSuffix(suffix string) bool {
 
 func (s *Stringer) TrimSpace() *Stringer {
 	s.setProcessedString(strings.TrimSpace(s.processedString))
+	return s
+}
+
+func (s *Stringer) Spaceless() *Stringer {
+	str := s.processedString
+	if str != "" {
+		str = strings.TrimSpace(str)
+	}
+	if str != "" {
+		str = rxSpaceless.ReplaceAllLiteralString(strings.ReplaceAll(str, "　", " "), " ")
+	}
+	s.setProcessedString(str)
 	return s
 }
 
@@ -155,11 +171,11 @@ func (s *Stringer) Contains(substr string) bool {
 }
 
 func (s *Stringer) ContainsWord(word string) bool {
-	str := `(^|([\s\t\n]+))(` + word + `)($|([\s\t\n]+))`
+	expr := `(^|([\s\t\n]+))(` + word + `)($|([\s\t\n]+))`
 	if !s.CaseSensitive {
-		str = "(?i)" + str
+		expr = "(?i)" + expr
 	}
-	return regexp.MustCompile(str).MatchString(s.processedString)
+	return regexp.MustCompile(expr).MatchString(s.processedString)
 }
 
 func (s *Stringer) UpperFirst() *Stringer {

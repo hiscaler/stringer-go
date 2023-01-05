@@ -14,7 +14,4 @@
 # Test coverage output
 coverage*.*
 
-# postgres data volume used by postgres server container for testing purpose
-testdata/postgres
-
 .idea/

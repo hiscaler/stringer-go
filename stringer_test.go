@@ -100,6 +100,31 @@ func TestStringer_HasSuffix(t *testing.T) {
 	}
 }
 
+func TestStringer_Spaceless(t *testing.T) {
+	type er struct {
+		OriginalString string
+		CaseSensitive  bool
+	}
+	tests := []struct {
+		name string
+		er   er
+		want string
+	}{
+		{"t1", er{OriginalString: "Hello World!", CaseSensitive: true}, "Hello World!"},
+		{"t2", er{OriginalString: " Hello     World!     ", CaseSensitive: false}, "Hello World!"},
+		{"t3", er{OriginalString: "Hello    W     orld!", CaseSensitive: true}, "Hello W orld!"},
+		{"t4", er{OriginalString: "Hello　　　World!", CaseSensitive: true}, "Hello World!"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			stringer := NewStringer(tt.er.OriginalString, tt.er.CaseSensitive)
+			if got := stringer.Spaceless(); got.Value() != tt.want {
+				t.Errorf("%s Spaceless() = `%v`, want `%v`", tt.name, got.Value(), tt.want)
+			}
+		})
+	}
+}
+
 func TestStringer_TrimLeft(t *testing.T) {
 	type er struct {
 		OriginalString string

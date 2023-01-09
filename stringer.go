@@ -158,6 +158,14 @@ func (s *Stringer) EqualFold(t string) bool {
 	return s.lowerProcessedString == strings.ToLower(t)
 }
 
+func (s *Stringer) Equals(t string) bool {
+	if s.CaseSensitive {
+		return s.processedString == t
+	} else {
+		return strings.EqualFold(s.lowerProcessedString, t)
+	}
+}
+
 func (s *Stringer) IsEmpty() bool {
 	return len(s.processedString) == 0
 }

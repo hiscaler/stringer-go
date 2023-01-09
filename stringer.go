@@ -154,6 +154,21 @@ func (s *Stringer) TrimSuffix(suffix string) *Stringer {
 	return s
 }
 
+func (s *Stringer) Replace(old, new string, n int) *Stringer {
+	s1 := s.processedString
+	if !s.CaseSensitive {
+		s1 = s.lowerProcessedString
+		old = strings.ToLower(old)
+	}
+	s.setProcessedString(strings.Replace(s1, old, new, n))
+	return s
+}
+
+func (s *Stringer) ReplaceAll(old, new string) *Stringer {
+	s.Replace(old, new, -1)
+	return s
+}
+
 func (s *Stringer) EqualFold(t string) bool {
 	return s.lowerProcessedString == strings.ToLower(t)
 }

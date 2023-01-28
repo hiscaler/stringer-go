@@ -194,6 +194,11 @@ func (s *Stringer) Contains(substr string) bool {
 }
 
 func (s *Stringer) ContainsWord(word string) bool {
+	word = strings.TrimSpace(word)
+	if word == "" {
+		return false
+	}
+
 	expr := `(^|([\s\t\n]+))(` + word + `)($|([\s\t\n]+))`
 	if !s.CaseSensitive {
 		expr = "(?i)" + expr

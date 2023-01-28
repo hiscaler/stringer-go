@@ -377,6 +377,8 @@ func TestStringer_ContainsWord(t *testing.T) {
 		{"t5", er{OriginalString: "username", CaseSensitive: false}, "name", false},
 		{"t6", er{OriginalString: "what's you name", CaseSensitive: false}, "what", false},
 		{"t7", er{OriginalString: "what's you name", CaseSensitive: false}, "what's", true},
+		{"t8", er{OriginalString: "0", CaseSensitive: false}, "0", true},
+		{"t9", er{OriginalString: "what's you name", CaseSensitive: false}, "name", true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

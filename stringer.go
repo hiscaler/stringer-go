@@ -15,6 +15,7 @@ var (
 type Stringer struct {
 	processedString      string // Processed string
 	lowerProcessedString string // Processed lower string
+	allIsLowered         bool   // All string is lowered
 	originalString       string // Original string
 	caseSensitive        bool   // Case sensitive
 }
@@ -30,16 +31,26 @@ func NewStringer(s string, caseSensitive bool) *Stringer {
 
 func (s *Stringer) setProcessedString(str string) *Stringer {
 	s.processedString = str
-	s.lowerProcessedString = strings.ToLower(str)
+	if s.allIsLowered {
+		s.lowerProcessedString = str
+	} else {
+		s.lowerProcessedString = strings.ToLower(str)
+	}
 	return s
 }
 
 func (s *Stringer) ToLower() *Stringer {
-	s.setProcessedString(s.lowerProcessedString)
+	str := s.lowerProcessedString
+	if !s.allIsLowered {
+		str = strings.ToLower(str)
+		s.allIsLowered = true
+	}
+	s.setProcessedString(str)
 	return s
 }
 
 func (s *Stringer) ToUpper() *Stringer {
+	s.allIsLowered = false
 	s.setProcessedString(strings.ToUpper(s.processedString))
 	return s
 }

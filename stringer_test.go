@@ -389,3 +389,13 @@ func TestStringer_ContainsWord(t *testing.T) {
 		})
 	}
 }
+
+func FuzzStringer_ContainsWord(f *testing.F) {
+	f.Add("hello world!", "hello")
+	f.Fuzz(func(t *testing.T, originalString string, word string) {
+		stringer := NewStringer(originalString, false)
+		if stringer.Contains(word) != strings.Contains(strings.ToLower(originalString), strings.ToLower(word)) {
+			t.Error("Not contains")
+		}
+	})
+}

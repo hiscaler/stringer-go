@@ -18,5 +18,7 @@ go get github.com/hiscaler/stringer
 ```go
 stringer := NewStringer("hello world!", false)
 stringer.HasPrefix("HEllO") // return `true`
-stringer.TrimPrefix("HEllO") // return ` world!`
+stringer.TrimPrefix("HEllO").NewValue() // return ` world!`
 ```
+
+You can use `NewValue()` method return processed string, and use `OriginalValue()` method return original string if you want. 

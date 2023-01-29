@@ -15,14 +15,14 @@ var (
 type Stringer struct {
 	processedString      string // Processed string
 	lowerProcessedString string // Processed lower string
-	OriginalString       string // Original string
-	CaseSensitive        bool   // Case sensitive
+	originalString       string // Original string
+	caseSensitive        bool   // Case sensitive
 }
 
 func NewStringer(s string, caseSensitive bool) *Stringer {
 	return &Stringer{
-		OriginalString:       s,
-		CaseSensitive:        caseSensitive,
+		originalString:       s,
+		caseSensitive:        caseSensitive,
 		processedString:      s,
 		lowerProcessedString: strings.ToLower(s),
 	}
@@ -46,7 +46,7 @@ func (s *Stringer) ToUpper() *Stringer {
 
 func (s *Stringer) HasPrefix(prefix string) bool {
 	s1 := s.processedString
-	if !s.CaseSensitive {
+	if !s.caseSensitive {
 		s1 = s.lowerProcessedString
 		prefix = strings.ToLower(prefix)
 	}
@@ -55,7 +55,7 @@ func (s *Stringer) HasPrefix(prefix string) bool {
 
 func (s *Stringer) HasSuffix(suffix string) bool {
 	s1 := s.processedString
-	if !s.CaseSensitive {
+	if !s.caseSensitive {
 		s1 = s.lowerProcessedString
 		suffix = strings.ToLower(suffix)
 	}
@@ -85,7 +85,7 @@ func (s *Stringer) TrimLeft(cutset string) *Stringer {
 	}
 
 	s1 := s.processedString
-	if !s.CaseSensitive {
+	if !s.caseSensitive {
 		s1 = s.lowerProcessedString
 		cutset = strings.ToLower(cutset)
 	}
@@ -100,7 +100,7 @@ func (s *Stringer) TrimRight(cutset string) *Stringer {
 	}
 
 	s1 := s.processedString
-	if !s.CaseSensitive {
+	if !s.caseSensitive {
 		s1 = s.lowerProcessedString
 		cutset = strings.ToLower(cutset)
 	}
@@ -111,7 +111,7 @@ func (s *Stringer) TrimRight(cutset string) *Stringer {
 
 func (s *Stringer) Index(substr string) int {
 	s1 := s.processedString
-	if !s.CaseSensitive {
+	if !s.caseSensitive {
 		s1 = s.lowerProcessedString
 		substr = strings.ToLower(substr)
 	}
@@ -120,7 +120,7 @@ func (s *Stringer) Index(substr string) int {
 
 func (s *Stringer) LastIndex(substr string) int {
 	s1 := s.processedString
-	if !s.CaseSensitive {
+	if !s.caseSensitive {
 		s1 = s.lowerProcessedString
 		substr = strings.ToLower(substr)
 	}
@@ -129,7 +129,7 @@ func (s *Stringer) LastIndex(substr string) int {
 
 func (s *Stringer) TrimPrefix(prefix string) *Stringer {
 	s1 := s.processedString
-	if !s.CaseSensitive {
+	if !s.caseSensitive {
 		prefix = strings.ToLower(prefix)
 		s1 = s.lowerProcessedString
 	}
@@ -146,7 +146,7 @@ func (s *Stringer) TrimPrefix(prefix string) *Stringer {
 
 func (s *Stringer) TrimSuffix(suffix string) *Stringer {
 	s1 := s.processedString
-	if !s.CaseSensitive {
+	if !s.caseSensitive {
 		suffix = strings.ToLower(suffix)
 		s1 = s.lowerProcessedString
 	}
@@ -156,7 +156,7 @@ func (s *Stringer) TrimSuffix(suffix string) *Stringer {
 
 func (s *Stringer) Replace(old, new string, n int) *Stringer {
 	s1 := s.processedString
-	if !s.CaseSensitive {
+	if !s.caseSensitive {
 		s1 = s.lowerProcessedString
 		old = strings.ToLower(old)
 	}
@@ -174,7 +174,7 @@ func (s *Stringer) EqualFold(t string) bool {
 }
 
 func (s *Stringer) Equals(t string) bool {
-	if s.CaseSensitive {
+	if s.caseSensitive {
 		return s.processedString == t
 	} else {
 		return strings.EqualFold(s.lowerProcessedString, t)
@@ -200,7 +200,7 @@ func (s *Stringer) ContainsWord(word string) bool {
 	}
 
 	expr := `(^|([\s\t\n]+))(` + word + `)($|([\s\t\n]+))`
-	if !s.CaseSensitive {
+	if !s.caseSensitive {
 		expr = "(?i)" + expr
 	}
 	return regexp.MustCompile(expr).MatchString(s.processedString)
@@ -224,7 +224,11 @@ func (s *Stringer) LowerFirst() *Stringer {
 	return s
 }
 
-func (s *Stringer) Value() string {
+func (s *Stringer) OriginalValue() string {
+	return s.originalString
+}
+
+func (s *Stringer) NewValue() string {
 	return s.processedString
 }
 

@@ -21,8 +21,8 @@ func TestStringer_ToLower(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			stringer := NewStringer(tt.er.OriginalString, tt.er.CaseSensitive)
-			if got := stringer.ToLower(); got.Value() != tt.want {
-				t.Errorf("%s ToLower() = `%v`, want `%v`", tt.name, got.Value(), tt.want)
+			if got := stringer.ToLower(); got.NewValue() != tt.want {
+				t.Errorf("%s ToLower() = `%v`, want `%v`", tt.name, got.NewValue(), tt.want)
 			}
 		})
 	}
@@ -44,8 +44,8 @@ func TestStringer_ToUpper(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			stringer := NewStringer(tt.er.OriginalString, tt.er.CaseSensitive)
-			if got := stringer.ToUpper(); got.Value() != tt.want {
-				t.Errorf("%s ToUpper() = `%v`, want `%v`", tt.name, got.Value(), tt.want)
+			if got := stringer.ToUpper(); got.NewValue() != tt.want {
+				t.Errorf("%s ToUpper() = `%v`, want `%v`", tt.name, got.NewValue(), tt.want)
 			}
 		})
 	}
@@ -119,8 +119,8 @@ func TestStringer_Spaceless(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			stringer := NewStringer(tt.er.OriginalString, tt.er.CaseSensitive)
-			if got := stringer.Spaceless(); got.Value() != tt.want {
-				t.Errorf("%s Spaceless() = `%v`, want `%v`", tt.name, got.Value(), tt.want)
+			if got := stringer.Spaceless(); got.NewValue() != tt.want {
+				t.Errorf("%s Spaceless() = `%v`, want `%v`", tt.name, got.NewValue(), tt.want)
 			}
 		})
 	}
@@ -147,8 +147,8 @@ func TestStringer_TrimLeft(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			stringer := NewStringer(tt.er.OriginalString, tt.er.CaseSensitive)
-			if got := stringer.TrimLeft(tt.cutstr); got.Value() != tt.want {
-				t.Errorf("%s TrimLeft() = `%v`, want `%v`", tt.name, got.Value(), tt.want)
+			if got := stringer.TrimLeft(tt.cutstr); got.NewValue() != tt.want {
+				t.Errorf("%s TrimLeft() = `%v`, want `%v`", tt.name, got.NewValue(), tt.want)
 			}
 		})
 	}
@@ -173,8 +173,8 @@ func TestStringer_TrimRight(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			stringer := NewStringer(tt.er.OriginalString, tt.er.CaseSensitive)
-			if got := stringer.TrimRight(tt.cutstr); got.Value() != tt.want {
-				t.Errorf("%s TrimRight() = `%v`, want `%v`", tt.name, got.Value(), tt.want)
+			if got := stringer.TrimRight(tt.cutstr); got.NewValue() != tt.want {
+				t.Errorf("%s TrimRight() = `%v`, want `%v`", tt.name, got.NewValue(), tt.want)
 			}
 		})
 	}
@@ -200,8 +200,8 @@ func TestStringer_TrimPrefix(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			stringer := NewStringer(tt.er.OriginalString, tt.er.CaseSensitive)
-			if got := stringer.TrimPrefix(tt.custstr); got.Value() != tt.want {
-				t.Errorf("%s TrimPrefix() = `%v`, want `%v`", tt.name, got.Value(), tt.want)
+			if got := stringer.TrimPrefix(tt.custstr); got.NewValue() != tt.want {
+				t.Errorf("%s TrimPrefix() = `%v`, want `%v`", tt.name, got.NewValue(), tt.want)
 			}
 		})
 	}
@@ -227,8 +227,8 @@ func TestStringer_TrimSuffix(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			stringer := NewStringer(tt.er.OriginalString, tt.er.CaseSensitive)
-			if got := stringer.TrimSuffix(tt.custstr); got.Value() != tt.want {
-				t.Errorf("%s TrimSuffix() = `%v`, want `%v`", tt.name, got.Value(), tt.want)
+			if got := stringer.TrimSuffix(tt.custstr); got.NewValue() != tt.want {
+				t.Errorf("%s TrimSuffix() = `%v`, want `%v`", tt.name, got.NewValue(), tt.want)
 			}
 		})
 	}
@@ -328,8 +328,8 @@ func TestStringer_UpperFirst(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			stringer := NewStringer(tt.er.OriginalString, tt.er.CaseSensitive)
-			if got := stringer.UpperFirst(); got.Value() != tt.want {
-				t.Errorf("%s UpperFirst() = `%v`, want `%v`", tt.name, got.Value(), tt.want)
+			if got := stringer.UpperFirst(); got.NewValue() != tt.want {
+				t.Errorf("%s UpperFirst() = `%v`, want `%v`", tt.name, got.NewValue(), tt.want)
 			}
 		})
 	}
@@ -352,8 +352,8 @@ func TestStringer_LowerFirst(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			stringer := NewStringer(tt.er.OriginalString, tt.er.CaseSensitive)
-			if got := stringer.LowerFirst(); got.Value() != tt.want {
-				t.Errorf("%s LowerFirst() = `%v`, want `%v`", tt.name, got.Value(), tt.want)
+			if got := stringer.LowerFirst(); got.NewValue() != tt.want {
+				t.Errorf("%s LowerFirst() = `%v`, want `%v`", tt.name, got.NewValue(), tt.want)
 			}
 		})
 	}

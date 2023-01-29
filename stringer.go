@@ -20,13 +20,21 @@ type Stringer struct {
 	caseSensitive        bool   // Case sensitive
 }
 
-func NewStringer(s string, caseSensitive bool) *Stringer {
-	return &Stringer{
-		originalString:       s,
-		caseSensitive:        caseSensitive,
-		processedString:      s,
-		lowerProcessedString: strings.ToLower(s),
-	}
+func NewStringer() *Stringer {
+	return &Stringer{}
+}
+
+func (s *Stringer) New(str string) *Stringer {
+	s.processedString = str
+	s.lowerProcessedString = strings.ToLower(str)
+	s.allIsLowered = false
+	s.originalString = str
+	return s
+}
+
+func (s *Stringer) SetCaseSensitive(b bool) *Stringer {
+	s.caseSensitive = b
+	return s
 }
 
 func (s *Stringer) setProcessedString(str string) *Stringer {
@@ -243,7 +251,7 @@ func (s *Stringer) NewValue() string {
 	return s.processedString
 }
 
-func (s *Stringer) ToByte() []byte {
+func (s *Stringer) NewBytes() []byte {
 	sh := (*reflect.StringHeader)(unsafe.Pointer(&s.processedString))
 	bh := reflect.SliceHeader{
 		Data: sh.Data,

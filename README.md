@@ -16,7 +16,9 @@ go get github.com/hiscaler/stringer
 ## Usage
 
 ```go
-stringer := NewStringer("hello world!", false)
+stringer := NewStringer()
+stringer.New("hello world!")
+stringer.SetCaseSensitive(false)
 stringer.HasPrefix("HEllO") // return `true`
 stringer.TrimPrefix("HEllO").NewValue() // return ` world!`
 ```

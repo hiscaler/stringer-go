@@ -201,11 +201,11 @@ func (s *Stringer) Equals(t string) bool {
 }
 
 func (s *Stringer) IsEmpty() bool {
-	return len(s.processedString) == 0
+	return s.processedString == ""
 }
 
 func (s *Stringer) IsBlank() bool {
-	return len(s.processedString) == 0 || strings.TrimSpace(s.processedString) == ""
+	return s.IsEmpty() || s.TrimSpace().IsEmpty()
 }
 
 func (s *Stringer) Contains(substr string) bool {
